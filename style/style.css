@@ -65,5 +65,13 @@ button {
     top: 318px;
     
 }
+.actividad{
+    position:absolute;
+    top: 160px;
+    width: 29%;
+    height: 30%;
+    left: 140px;
+    border-radius: 8%;
+}
 
 

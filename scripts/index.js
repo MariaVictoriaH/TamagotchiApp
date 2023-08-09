@@ -10,17 +10,18 @@ class Tamagotchi {
 
 let myTamagotchi = new Tamagotchi(1, 1, 1, 0);
 
-$("#restart").hide();
+$("#iniciar").hide();
 
 function startGame() {
-    grow();
+    crecer();
 }
 
-function grow() {
+function crecer() {
+    debugger;
     if (myTamagotchi.edad < 1) {
         hatch();
     } else {
-        $("img:eq(1)").replaceWith("<img src='tamagotchi-bunny-2.png'>")
+        document.getElementsByClassName('actividad')[0].src='bebe.gif';
         incrementaEdad();
         incrementaComer();
         incrementaDormir();
@@ -31,7 +32,7 @@ function hatch() {
     let timeoutID = window.setTimeout(function() {
         myTamagotchi.edad += 1;
         $("#age").replaceWith(`<p id='age'>Edad: ${myTamagotchi.edad}</p>`);
-        grow();
+        crecer();
     }, 15000)
 }
 
@@ -42,7 +43,7 @@ function incrementaComer() {
         if (myTamagotchi.Comer < 10) {
             incrementaComer();
         } else {
-            die();
+            muerto();
         }
     }, 20000)
 };
@@ -55,7 +56,7 @@ function incrementaDormir() {
         if (myTamagotchi.dormir < 10) {
             incrementaDormir();
         } else {
-            die();
+            muerto();
         }
     }, 30000)
 
@@ -68,7 +69,7 @@ function incrementaDesparchado() {
         if (myTamagotchi.desparchado < 10) {
             incrementaDesparchado();
         } else {
-            die();
+            muerto();
         }
     }, 10000)
 };
@@ -84,7 +85,8 @@ function incrementaEdad() {
 
 }
 
-function alimentar() {
+function comer() {
+    document.getElementsByClassName('actividad')[0].src='comiendo.gif';
     if (myTamagotchi.comer >= 2) {
         myTamagotchi.comer -= 2;
         $("#hunger").replaceWith(`<p id='hunger'>Comer: ${myTamagotchi.comer}</p>`);
@@ -95,6 +97,7 @@ function alimentar() {
 }
 
 function jugar() {
+    document.getElementsByClassName('actividad')[0].src='Jugando.gif';
     if (myTamagotchi.desparchado >= 3) {
         myTamagotchi.desparchado -= 3;
         $("#boredom").replaceWith(`<p id='boredom'>Desparchado: ${myTamagotchi.desparchado}</p>`);
@@ -105,28 +108,27 @@ function jugar() {
 }
 
 function descansar(time) {
-    $("img:eq(0)").replaceWith("<img src='tamagotchi-home-night.jpg'>");
+    document.getElementsByClassName('actividad')[0].src='Durmiendo.gif';
     let timeoutID = window.setTimeout(function() {
         myTamagotchi.dormir = 0;
-        $("img:eq(0)").replaceWith("<img src='tamagotchi-home.png'>")
         $("#sleepiness").replaceWith(`<p id='sleepiness'>Dormir: ${myTamagotchi.dormir}</p>`);
     }, time)
 }
 
-function die() {
+function muerto() {
     alive = false;
-    $("img:eq(1)").replaceWith("<img src='tamagotchi-dead.png'>");
+    document.getElementsByClassName('actividad')[0].src='Muerto.gif';
     $("#sleep").hide();
     $("#play").hide();
     $("#feed").hide();
-    $("#restart").show()
+    $("#iniciar").show()
     $("#actions").after("<h2>Tamagotchi a muerto!!!</h2>")
 }
 
-function restart() {
+function iniciar() {
     let alive = true;
-    $("#restart").hide();
-    $("img:eq(1)").replaceWith("<img src='tamagotchi-egg.png'>");
+    $("#iniciar").hide();
+    document.getElementsByClassName('actividad')[0].src='bebe.gif';
     myTamagotchi.dormir = 0;
     $("#sleepiness").replaceWith(`<p id='sleepiness'>Dormir: ${myTamagotchi.dormir}</p>`);
     $("#sleep").show()
@@ -142,7 +144,7 @@ function restart() {
 }
 
 $("#sleep").click(function() {
-    dormir(2000);
+    descansar(2000);
 });
 
 $("#play").click(function() {
@@ -153,13 +155,13 @@ $("#feed").click(function() {
     comer();
 })
 
-$("#restart").click(function() {
-    restart();
+$("#iniciar").click(function() {
+    iniciar();
 })
 
-startGame();
-
 if (myTamagotchi.sleep > 10) {
-    die()
+    muerto()
 }
+
+startGame();
 
