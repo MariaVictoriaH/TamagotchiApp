@@ -19,7 +19,7 @@ class Tamagotchi {
 let myTamagotchi = new Tamagotchi(100, 100, 100, 100,0);
 
 function startGame() {
-    actividad.src='inicio.gif';
+    actividad.src='Inicio.gif';
     crecer();
 }
 
