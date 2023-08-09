@@ -48,8 +48,8 @@ button {
 }
 
 .stats {
-	max-width: 110px;
-	top: 70px;
+	max-width: 120px;
+	top: 170px;
     margin-left: 310px;
 }
 
@@ -72,6 +72,16 @@ button {
     height: 30%;
     left: 140px;
     border-radius: 8%;
+}
+
+.hiden{
+display: none;
+}
+
+.mensajes{
+    color:blue;
+    top: 410px;
+    left: 450px;
 }
 
 
