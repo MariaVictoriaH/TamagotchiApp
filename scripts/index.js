@@ -4,42 +4,21 @@ const iniciar = document.getElementById('iniciar');
 const comer = document.getElementById('comer');
 const dormir = document.getElementById('dormir');
 const jugar = document.getElementById('jugar');
+const volver = document.getElementById('volver');
 
 
 class Tamagotchi {
-    constructor(hambre, dormir, jugar, felicidad, edad) {
+    constructor(hambre, dormir, jugar, felicidad, salud,edad) {
         this.hambre = hambre;
         this.dormir = dormir;
         this.jugar = jugar;
         this.felicidad = felicidad;
+        this.salud  = salud;
         this.edad = edad;
     }
 }
 
-let myTamagotchi = new Tamagotchi(100, 100, 100, 100,0);
-
-function startGame() {
-    actividad.src='tranquilo.jpg';
-    crecer();
-}
-
-function evolucionar() {
-    window.setTimeout(function() {
-    myTamagotchi.edad += 1;
-    myTamagotchi.felicidad = Math.max(0, myTamagotchi.felicidad - 5);
-    myTamagotchi.hambre = Math.max(0, myTamagotchi.hambre - 3);
-    myTamagotchi.dormir = Math.max(0, myTamagotchi.dormir - 5);
-    myTamagotchi.jugar = Math.max(0, myTamagotchi.jugar - 2);
-
-    $("#edad").replaceWith(`<p id='edad'>Edad: ${myTamagotchi.edad}</p>`);
-    $("#felicidad").replaceWith(`<p id='felicidad'>Felicidad: ${myTamagotchi.felicidad}</p>`);
-    $("#stats_hambre").replaceWith(`<p id='stats_hambre'>Hambre: ${myTamagotchi.hambre}</p>`);
-    $("#stats_dormir").replaceWith(`<p id='stats_dormir'>Dormir: ${myTamagotchi.dormir}</p>`);
-    $("#stats_jugar").replaceWith(`<p id='stats_jugar'>Jugar: ${myTamagotchi.jugar}</p>`);
-    
-    crecer();
- }, 3000)
-};
+let myTamagotchi = new Tamagotchi(100, 100, 100, 100, 100,0);
 
 function crecer() {
     if (myTamagotchi.edad < 80 && myTamagotchi.felicidad > 10) {
@@ -51,16 +30,29 @@ function crecer() {
    } 
 };
 
-function incrementaDesparchado() {
-    let timeoutID = window.setTimeout(function() {
-        myTamagotchi.jugar += 2;
-        $("#boredom").replaceWith(`<p id='boredom'>Desparchado: ${myTamagotchi.jugar}</p>`);
-        if (myTamagotchi.jugar < 10) {
-            incrementaDesparchado();
-        } else {
-            muerto();
-        }
-    }, 1000)
+function startGame() {
+    actividad.src='tranquilo.jpg';
+    crecer();
+}
+
+function evolucionar() {
+    window.setTimeout(function() {
+    myTamagotchi.edad += 1;
+    myTamagotchi.felicidad = Math.max(0, myTamagotchi.felicidad - 5);
+    myTamagotchi.salud   = Math.max(0, myTamagotchi.salud - 5);
+    myTamagotchi.hambre = Math.max(0, myTamagotchi.hambre - 3);
+    myTamagotchi.dormir = Math.max(0, myTamagotchi.dormir - 5);
+    myTamagotchi.jugar = Math.max(0, myTamagotchi.jugar - 2);
+
+    $("#edad").replaceWith(`<p id='edad'>Edad: ${myTamagotchi.edad}</p>`);
+    $("#felicidad").replaceWith(`<p id='felicidad'>Felicidad: ${myTamagotchi.felicidad}</p>`);
+    $("#salud").replaceWith(`<p id='salud'>Salud: ${myTamagotchi.salud}</p>`);
+    $("#stats_hambre").replaceWith(`<p id='stats_hambre'>Hambre: ${myTamagotchi.hambre}</p>`);
+    $("#stats_dormir").replaceWith(`<p id='stats_dormir'>Dormir: ${myTamagotchi.dormir}</p>`);
+    $("#stats_jugar").replaceWith(`<p id='stats_jugar'>Jugar: ${myTamagotchi.jugar}</p>`);
+    
+    crecer();
+ }, 3000)
 };
 
 function muerto(tiempoVida ) {
@@ -69,33 +61,36 @@ function muerto(tiempoVida ) {
        $("#dormir").hide();
        $("#jugar").hide();
        $("#comer").hide();
-       $("#iniciar").show()
-       $("#actions").after("<h1>Tamagotchi a muerto!!!</h1>")
+       volver.style.display = 'inline';
+       $("#notificacion").after("<h1>Tamagotchi a muerto!!!</h1>")
  }
 }
 
-function volver() {
-    let alive = true;
-    $("#iniciar").hide();
-    actividad.src='bebe.gif';
-    myTamagotchi.dormir = 0;
-    $("#sleepiness").replaceWith(`<p id='dormir'>Dormir: ${myTamagotchi.dormir}</p>`);
-    $("#dormir").show()
-    myTamagotchi.jugar = 0;
-    $("#boredom").replaceWith(`<p id='jugar'>Jugar: ${myTamagotchi.jugar}</p>`);
-    $("#jugar").show()
-    myTamagotchi.comer = 0;
-    $("#hunger").replaceWith(`<p id='comer'>Comer: ${myTamagotchi.comer}</p>`);
-    $("#comer").show()
+volver.addEventListener('click', function() {
+    actividad.src='comenzar.gif';
+    iniciar.style.display = 'inline';
+    volver.style.display = 'none';
+    mensajes.style.display ='none';
+    myTamagotchi.dormir = 100;
+    $("#stats_dormir").replaceWith(`<p id='stats_jugar'>Dormir: ${myTamagotchi.dormir}</p>`);
+    myTamagotchi.jugar = 100;
+    $("#stats_jugar").replaceWith(`<p id='stats_jugar'>Jugar: ${myTamagotchi.jugar}</p>`);
+    myTamagotchi.hambre = 100;
+    $("#stats_hambre").replaceWith(`<p id='stats_hambre'>Hambre: ${myTamagotchi.hambre}</p>`);
+    myTamagotchi.felicidad = 100;
+    $("#felicidad").replaceWith(`<p id='felicidad'>Felicidad: ${myTamagotchi.felicidad}</p>`);
     myTamagotchi.edad = 0
-    $("#age").replaceWith(`<p id='age'>Edad: ${myTamagotchi.edad}</p>`);
-    startGame();
-}
+});
 
 dormir.addEventListener('click', function() {
     actividad.src='Durmiendo.gif';
+    myTamagotchi.salud = Math.min(100, myTamagotchi.salud + 10);
     myTamagotchi.felicidad = Math.max(0, myTamagotchi.felicidad - 5);
-    $("#stats_dormir").replaceWith(`<p id='stats_dormir'>Dormir: ${myTamagotchi.dormir}</p>`);
+    myTamagotchi.hambre = Math.max(0, myTamagotchi.hambre - 5);
+
+    $("#salud").replaceWith(`<p id='salud'>Salud: ${myTamagotchi.salud}</p>`);
+    $("#felicidad").replaceWith(`<p id='felicidad'>Felicidad: ${myTamagotchi.felicidad}</p>`);
+    $("#stats_hambre").replaceWith(`<p id='stats_hambre'>Hambre: ${myTamagotchi.hambre}</p>`);
 });
 
 jugar.addEventListener('click', function() {
@@ -103,10 +98,12 @@ jugar.addEventListener('click', function() {
         actividad.src='tranquilo.jpg';
     } else {
         actividad.src='Jugando.gif';
-        myTamagotchi.felicidad = Math.min(100, myTamagotchi.felicidad + 5);
-        myTamagotchi.hambre = Math.min(100, myTamagotchi.hambre + 20);
+        myTamagotchi.felicidad = Math.min(100, myTamagotchi.felicidad + 15);
+        myTamagotchi.salud = Math.max(0, myTamagotchi.salud - 5);
+        myTamagotchi.hambre = Math.max(0, myTamagotchi.hambre - 5);
 
         $("#felicidad").replaceWith(`<p id='felicidad'>Felicidad: ${myTamagotchi.felicidad}</p>`);
+        $("#salud").replaceWith(`<p id='salud'>Salud: ${myTamagotchi.salud}</p>`);
         $("#stats_hambre").replaceWith(`<p id='stats_hambre'>Hambre: ${myTamagotchi.hambre}</p>`);
     }
 })
@@ -116,13 +113,17 @@ comer.addEventListener('click', function() {
         actividad.src='tranquilo.jpg';
     } else {
         actividad.src='comiendo.gif';
-        myTamagotchi.felicidad = Math.min(100, myTamagotchi.felicidad + 15);
-        myTamagotchi.hambre = Math.min(100, myTamagotchi.hambre + 5);
+        myTamagotchi.felicidad = Math.min(100, myTamagotchi.felicidad + 5);
+        myTamagotchi.salud = Math.min(100, myTamagotchi.salud + 5);
+        myTamagotchi.hambre = Math.min(100, myTamagotchi.hambre + 10);
+        $("#felicidad").replaceWith(`<p id='felicidad'>Felicidad: ${myTamagotchi.felicidad}</p>`);
+        $("#salud").replaceWith(`<p id='salud'>Salud: ${myTamagotchi.salud}</p>`);
         $("#stats_hambre").replaceWith(`<p id='stats_hambre'>Hambre: ${myTamagotchi.hambre}</p>`);
     }
 }); 
 
 iniciar.addEventListener('click', function(){
+    volver.style.display = 'none';
     iniciar.style.display = 'none';
     comer.style.display = 'inline';
     dormir.style.display = 'inline';
